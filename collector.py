@@ -122,7 +122,6 @@ connects to facebook and returns a document containing the group details
 
 def get_group_description():
     feed = graph.get_object(id=GID, fields='name, description, member_request_count, feed.limit(1)')
-    pp.pprint(feed)
     return group_info(feed)
 
 """
@@ -151,7 +150,7 @@ def get_all_group_posts():
 
 
 """
-connects to facebook and returns a list of documents containing all the posts in the given group
+connects to facebook and returns a list of documents containing the posts in the given group, at a date range
 parameter since, until, are string representing the date in format: yyyy-mm-dd 
 """
 
