@@ -8,13 +8,7 @@ import time
 this collects facebook posts, comments, and comment replies in a spesific date range
 
 TODO:
-- get number of members- gross to write! :(
-
-- more cleanup
-
-- less printing
-
-- figure out how to upload the docs
+- get number of members- gross to write :(
 """
 
 f = open('facebook_details.txt', 'r')
@@ -135,7 +129,7 @@ def get_all_group_posts():
 
     # Wrap this block in a while loop so we can keep paginating requests until
     # finished.
-    while (True):
+    while True:
         try:
             for post in feed['data']:
                 post_docs.append(post_info(post))
@@ -158,7 +152,7 @@ def get_group_posts_in_range(since, until):
     post_docs = []
     feed = graph.get_object(id=GID, since=since, until=until,
                             fields='feed{created_time, from, reactions, message, likes.summary(true),'
-                                           'comments.summary(true)}')["feed"]
+                            'comments.summary(true)}')["feed"]
     # set cursor on given date range
     pattern = '%Y-%m-%d'
     since_epoch = str(int(time.mktime(time.strptime(since, pattern))))
@@ -167,7 +161,7 @@ def get_group_posts_in_range(since, until):
 
     # Wrap this block in a while loop so we can keep paginating requests until
     # finished.
-    while (True):
+    while True:
         try:
             for post in feed['data']:
                 post_docs.append(post_info(post))
@@ -188,12 +182,12 @@ connects to facebook and returns a list of documents containing all the comments
 """
 
 def get_group_comment(post):
-    if (post["comment_count"] != 0):
+    if post["comment_count"] != 0:
         comment_docs = []
         comments = graph.get_connections(id=post["id"], connection_name='comments')
         # Wrap this block in a while loop so we can keep paginating requests until
         # finished.
-        while (True):
+        while True:
             try:
                 for comment in comments['data']:
                     comment_object = graph.get_object(id=comment["id"], fields='id, comment_count, '
@@ -215,13 +209,13 @@ connects to facebook and returns a list of documents containing all the replies 
 """
 
 def get_group_reply(comment):
-    if (comment["comment_count"] != 0):
+    if comment["comment_count"] != 0:
         reply_docs = []
         replies = graph.get_object(id=comment["id"], fields='comments{comments, from, id, message, '
-                                                                 'like_count, parent, created_time}')
+                                                            'like_count, parent, created_time}')
         # Wrap this block in a while loop so we can keep paginating requests until
         # finished.
-        while (True):
+        while True:
             try:
                 for reply in replies["comments"]["data"]:
                     reply_docs.append(reply_info(reply))
